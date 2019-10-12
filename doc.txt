@@ -1,0 +1,615 @@
+JSX: 
+JSX is a syntax extension for JS. It was written to be used 
+with React. JSX code looks a lot like HTML. 
+JSX is not valid JS. Web Browser can not read it. 
+If JS file contains JSX code, then that file will have to be
+compiled.That means before the file reaches a web browser, 
+a JSF compiler will translate any JSX into regular JS. 
+
+JSX Elements: 
+A basic unit of JSX is called JSX element. 
+Exp: 
+const navBar = <nav>I am nav bar</nav>;
+
+Attributes in JSX: 
+
+    <a href="http://www.example.com">Welcome to the Web</a>;
+    const title = <h1 id="title">Introduction to React.js: Part I</h1>; 
+
+    const panda = <img src="images/panda.jpg" alt="panda" width="500px" height="500px" />;
+
+Nested JSX: 
+    //For multiine JSX
+    (
+        <a href="https://www.example.com">
+            <h1>Click me!</h1>
+        </a>
+    )
+
+JSX Outer Elements: 
+    a JSX expression must have exactly one outermost 
+element. 
+
+//This works 
+const paragraphs = (
+  <div id="i-am-the-outermost-element">
+    <p>I am a paragraph.</p>
+    <p>I, too, am a paragraph.</p>
+  </div>
+);
+
+//This does not work 
+const paragraphs = (
+  <p>I am a paragraph.</p> 
+  <p>I, too, am a paragraph.</p>
+);
+
+Rendering JSX: 
+----------------------------------------------
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+// Copy code here:
+ReactDOM.render(<h1>Hello world</h1>, document.getElementById('app'));
+-----------------------------------------------
+
+The Virtual DOM: 
+
+ReactDOM.render() only updates DOM elements that have 
+changed. That means if you render the exact same thing 
+twice in a row, the second render will do nothing. 
+
+const hello = <h1>Hello world</h1>;
+
+// This will add "Hello world" to the screen:
+
+ReactDOM.render(hello, document.getElementById('app'));
+
+// This won't do anything at all:
+
+ReactDOM.render(hello, document.getElementById('app'));
+
+
+class VS className: 
+You can not use class in JSX, you have to use 
+className. 
+
+Make sure to put forward slash in self closing tags. 
+//JavaScript inside JSX.
+ReactDOM.render(
+  <h1>{2 + 3}</h1>,
+  document.getElementById('app')
+);
+
+------------------------------------------
+Event Listeners in JSX: 
+<img onClick={myFunc}/>
+--------------------------------------
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+function makeDoggy(e) {
+  // Call this extremely useful function on an <img>.
+  // The <img> will become a picture of a doggy.
+  e.target.setAttribute('src', 'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-puppy.jpeg');
+  e.target.setAttribute('alt', 'doggy');
+}
+
+const kitty = (
+	<img 
+		src="https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-kitty.jpg" 
+		alt="kitty" 
+    onClick={makeDoggy}/>
+);
+
+ReactDOM.render(kitty, document.getElementById('app'));
+---------------------------------------------------------
+
+You can not inject if statement to JSX. 
+const headline = (
+  <h1>
+    { age >= drinkingAge ? 'Buy Drink' : 'Do Teen Stuff' }
+  </h1>
+);
+
+const tasty = (
+  <ul>
+    <li>Applesauce</li>
+    { !baby && <li>Pizza</li> }
+    { age > 15 && <li>Brussels Sprouts</li> }
+    { age > 20 && <li>Oysters</li> }
+    { age > 25 && <li>Grappa</li> }
+  </ul>
+);
+
+
+.map in JSX: 
+If you want to create a list of JSX elements, then 
+.map() is often your best bet. 
+
+const strings = ['Home', 'Shop', 'About Me'];
+
+const listItems = strings.map(string => <li>{string}</li>);
+
+<ul>{listItems}</ul>
+
+Keys: 
+A key is a JSX attribute. The attribute's name is key. The attribute's 
+value should be something unique, similar to id attribute. React uses 
+keys internally to keep track of lists. 
+<ul>
+  <li key="li-01">Example1</li>
+  <li key="li-02">Example2</li>
+  <li key="li-03">Example3</li>
+</ul>
+A list need to have keys in either of the following. 
+1. The list-item have memory from one render to the next. 
+2. A list's order might be shuffled. 
+-------------------------------------------------------
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+const people = ['Rowe', 'Prevost', 'Gare'];
+
+const peopleLis = people.map((person, i) =>
+  // expression goes here:
+  <li key={'person_' + i}>{person}</li>
+);
+
+// ReactDOM.render goes here:
+ReactDOM.render(<ul>{peopleLis}</ul>, document.getElementById('app'));
+----------------------------------------------------------------------
+
+CreateElement();
+const h1 = <h1>Hello World</h1> 
+can be written as 
+const h1 = React.createElement(
+  "h1", 
+  null,
+  "Hello World"
+)
+--------------------------------------------------------------------
+Component: 
+A component is a small, reusable chunk of code that is 
+responsible for one job. That is often to render some 
+HTML. 
+
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+class MyComponentClass extends React.Component {
+  render() {
+    return <h1>Hello world</h1>;
+  }
+};
+
+ReactDOM.render(
+  <MyComponentClass />,
+  document.getElementById('app')
+);
+
+MultiLine JSX in a Component: 
+
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+class QuoteMaker extends React.Component {
+  render() {
+    return (
+      <blockquote>
+  <p>
+    What is important now is to recover our senses.
+  </p>
+  <cite>
+    <a target="_blank" 
+      href="https://en.wikipedia.org/wiki/Susan_Sontag">
+      Susan Sontag
+    </a>
+  </cite>
+</blockquote>
+    );
+  }
+};
+
+ReactDOM.render(
+  <QuoteMaker />,
+  document.getElementById('app')
+);
+
+
+Use a variable attribute in a Component: 
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+const redPanda = {
+  src: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Endangered_Red_Panda.jpg',
+  alt: 'Red Panda',
+  width:  '200px'
+};
+
+class RedPanda extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Cute Red Panda</h1>
+        <img 
+          src={redPanda.src}
+          alt={redPanda.alt}
+          width={redPanda.width} />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <RedPanda />,
+  document.getElementById('app')
+);
+
+
+Put a logic in render function: 
+
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+
+const friends = [
+  {
+    title: "Yummmmmmm",
+    src: "https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-monkeyweirdo.jpg"
+  },
+  {
+    title: "Hey Guys!  Wait Up!",
+    src: "https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-earnestfrog.jpg"
+  },
+  {
+    title: "Yikes",
+    src: "https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-alpaca.jpg"
+  }
+];
+
+// New component class starts here:
+
+class Friend extends React.Component{
+  render() {
+    const friend = friends[0];
+    return (
+      <div>
+        <h1>{friend.title}</h1>
+        <img 
+          src = {friend.src}
+          />
+      </div>
+    );
+	}
+}
+
+ReactDOM.render(
+  <Friend />,
+  document.getElementById('app')
+);
+
+-------------------------------------------------------
+Use a Conditional in a Render Function 
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+class TodaysPlan extends React.Component {
+  render() {
+    let task;
+    if (!apocalypse) {
+      task = 'learn React.js'
+    } else {
+      task = 'run around'
+    }
+
+    return <h1>Today I am going to {task}!</h1>;
+  }
+}
+
+ReactDOM.render(
+	<TodaysPlan />,
+	document.getElementById('app')
+);
+
+
+Using this in a Component: 
+
+class IceCreamGuy extends React.Component {
+  get food() {
+    return 'ice cream';
+  }
+
+  render() {
+    return <h1>I like {this.food}.</h1>;
+  }
+} 
+
+event listener in a Component: 
+
+class MyClass extends React.Component {
+  myFunc() {
+    alert('Stop it.  Stop hovering.');
+  }
+
+  render() {
+    return (
+      <div onHover={this.myFunc}>
+      </div>
+    );
+  }
+}
+
+
+Component Interact: 
+
+class OMG extends React.Component {
+  render() {
+    return <h1>Whooaa!</h1>;
+  }
+}
+
+class Crazy extends React.Component {
+  render() {
+    return <OMG />;
+  }
+}
+
+Require a File --------------------------------------
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { NavBar } from './NavBar'
+
+
+class ProfilePage extends React.Component {
+  render() {
+    return (
+      <div>
+				<NavBar />
+        <h1>All About Me!</h1>
+        <p>I like movies and blah blah blah blah blah</p>
+        <img src="https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-monkeyselfie.jpg" />
+      </div>
+    );
+  }
+}
+
+
+import React from 'react';
+
+export class NavBar extends React.Component {
+  render() {
+    const pages = ['home', 'blog', 'pics', 'bio', 'art', 'shop', 'about', 'contact'];
+    const navLinks = pages.map(page => {
+      return (
+        <a href={'/' + page}>
+          {page}
+        </a>
+      )
+    });
+
+    return <nav>{navLinks}</nav>;
+  }
+}
+
+
+Export ------------------------------------------
+
+// Manifestos.js:
+
+export const faveManifestos = {
+  futurist: 'http://www.artype.de/Sammlung/pdf/russolo_noise.pdf',
+  agile:  'https://agilemanifesto.org/iso/en/manifesto.html',
+  cyborg:   'http://faculty.georgetown.edu/irvinem/theory/Haraway-CyborgManifesto-1.pdf'
+};
+
+export const alsoRan = 'TimeCube';
+
+
+// App.js:
+
+// Import faveManifestos and alsoRan from ./Manifestos.js:
+import { faveManifestos, alsoRan } from './Manifestos';
+
+// Use faveManifestos:
+console.log(`A Cyborg Manifesto:  ${faveManifestos.cyborg}`); 
+
+
+this.props------------------------------------
+a component can pass information to another component. 
+prop holds the information about component. 
+
+render() {
+  console.log("Props object comin' up!");
+  console.log(this.props);
+  console.log("That was my props object!");
+  return <h1>Hello world</h1>;
+}
+
+pass 'props' to a Component: 
+
+<Example message="This is some top secret info." />
+The value that are not string are wrapped into curly braces. 
+Greeting myInfo={["top", "secret", "lol"]} />
+<Greeting name="Frarthur" town="Flundon" age={2} haunted={false} />
+
+
+Rendering props: 
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+class Greeting extends React.Component {
+  render() {
+    return <h1>Hi there,{this.props.firstName}</h1>;
+  }
+}
+
+ReactDOM.render(
+  <Greeting firstName='Bikram' />, 
+  document.getElementById('app')
+);
+
+
+----------greeting.js----------------------
+import React from 'react';
+
+export class Greeting extends React.Component {
+  render() {
+    return <h1>Hi there, {this.props.name}!</h1>;
+  }
+}
+-----------------app.js--------------------------
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Greeting} from './Greeting';
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>
+          Hullo and, "Welcome to The Newzz," "On Line!"
+        </h1>
+        <Greeting name="Bikram"/>
+        <article>
+          Latest newzz:  where is my phone?
+        </article>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <App />, 
+  document.getElementById('app')
+);
+
+
+
+-----------------buttons.js-------------------------
+
+import React from 'react';
+
+export class Button extends React.Component {
+  render() {
+    return (
+      <button onClick={this.props.onClick}>
+        Click me!
+      </button>
+    );
+  }
+}
+
+--------------------talker.js-------------------------------
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Button } from './Button';
+
+class Talker extends React.Component {
+  handleClick() {
+    let speech = '';
+    for (let i = 0; i < 10000; i++) {
+      speech += 'blah ';
+    }
+    alert(speech);
+  }
+  
+  render() {
+    return <Button onClick={this.handleClick}/>;
+  }
+}
+
+ReactDOM.render(
+  <Talker />,
+  document.getElementById('app')
+);
+
+
+
+class MyClass extends React.Component {
+  handleHover() {
+    alert('I am an event handler.');
+    alert('I will be called in response to "hover" events.');
+  }
+}
+class MyClass extends React.Component {
+  handleHover() {
+    alert('I am an event handler.');
+    alert('I will listen for a "hover" event.');
+  }
+
+  render() {
+    return <Child onHover={this.handleHover} />;
+  }
+}
+
+this.props.children---------------------------------------------
+
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { List } from './List';
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <List type='Living Musician'>
+          <li>Sachiko M</li>
+          <li>Harvey Sid Fisher</li>
+        </List>
+        <List type='Living Cat Musician'>
+          <li>Nora the Piano Cat</li>
+        </List>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <App />, 
+  document.getElementById('app')
+);
+
+
+import React from 'react';
+
+export class List extends React.Component {
+  render() {
+    let titleText = `Favorite ${this.props.type}`;
+    if (this.props.children instanceof Array) {
+    	titleText += 's';
+    }
+    return (
+      <div>
+        <h1>{titleText}</h1>
+        <ul>
+        {this.props.children}
+        </ul>
+      </div>
+    );
+  }
+}
+
+Default Props--------------------------------------------
+
+class Example extends React.Component {
+  render() {
+    return <h1>{this.props.text}</h1>;
+  }
+}
+
+Example.defaultProps = { text: 'yo' }; 
+
+--------------STATE--------------------------------------
+
